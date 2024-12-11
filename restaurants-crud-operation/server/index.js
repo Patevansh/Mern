@@ -26,10 +26,25 @@ const app=express();
 const port=process.env.PORT;
 app.use(express.static(__dirname+"/views"));
 
-app.get("/",(req,res)=>{
-    res.sendFile(__dirname+"/views/index.html")
+
+app.use((req,res,next)=>{
+    const secretCode=req.query.secret;
+    if(secretCode==='1234'){
+        req.isAuthorized=true;
+    }else{
+        req.isAuthorized=false;
+    }
+    next();
+});
+
+app.get("/auth",(req,res)=>{
+    if(req.isAuthorized){
+        res.sendFile(__dirname+"/views/index.html")
+    }else{
+        res.send("unauthorized ");
+    }
 })
 
 app.listen(port,()=>{
-    console.log(`Server is runnung on http://localhost:${port}`);
+    console.log(`Server is runnung on http://localhost:${port}/auth`);
 })
