@@ -16,12 +16,14 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import dotenv from 'dotenv';
 
+dotenv.config();
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename); 
 const app=express();
-const port=3001;
 
+const port=process.env.PORT;
 app.use(express.static(__dirname+"/views"));
 
 app.get("/",(req,res)=>{
@@ -29,5 +31,5 @@ app.get("/",(req,res)=>{
 })
 
 app.listen(port,()=>{
-    console.log("Server is runnung on http://localhost:3001");
+    console.log(`Server is runnung on http://localhost:${port}`);
 })
