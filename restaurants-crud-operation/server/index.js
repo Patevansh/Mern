@@ -17,8 +17,9 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 
-dotenv.config();
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename); 
 const app=express();
@@ -26,25 +27,43 @@ const app=express();
 const port=process.env.PORT;
 app.use(express.static(__dirname+"/views"));
 
+dotenv.config();
+const URl=process.env.MONGODB_URL;
+console.log(URl);
 
-app.use((req,res,next)=>{
-    const secretCode=req.query.secret;
-    if(secretCode==='1234'){
-        req.isAuthorized=true;
-    }else{
-        req.isAuthorized=false;
-    }
-    next();
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
 
-app.get("/auth",(req,res)=>{
-    if(req.isAuthorized){
-        res.sendFile(__dirname+"/views/index.html")
-    }else{
-        res.send("unauthorized ");
-    }
+mongoose.connect(URl,{useNewParser:true,useUnifiedTopology:true})
+.then(()=>{console.log("DB connected successfully");
+    app.listen(port,()=>{
+        console.log(`Listening at port http://localhost:${port}`);
+
+    });
 })
+.catch((err)=>{console.error("Connection failed :",err)});
 
-app.listen(port,()=>{
-    console.log(`Server is runnung on http://localhost:${port}/auth`);
-})
+
+
+
+// app.use((req,res,next)=>{
+//     const secretCode=req.query.secret;
+//     if(secretCode==='1234'){
+//         req.isAuthorized=true;
+//     }else{
+//         req.isAuthorized=false;
+//     }
+//     next();
+// });
+
+// app.get("/auth",(req,res)=>{
+//     if(req.isAuthorized){
+//         res.sendFile(__dirname+"/views/index.html")
+//     }else{
+//         res.send("unauthorized ");
+//     }
+// })
+
+// app.listen(port,()=>{
+//     console.log(`Server is runnung on http://localhost:${port}/auth`);
+// })

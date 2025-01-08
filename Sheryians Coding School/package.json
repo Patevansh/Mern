@@ -1,0 +1,20 @@
+{
+  "name": "sheryians-coding-school",
+  "version": "1.0.0",
+  "main": "script.js",
+  "type": "module",
+  "scripts": {
+    "start1": "nodemon index.js",
+    "start": "nodemon script.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
