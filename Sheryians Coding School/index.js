@@ -24,22 +24,34 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:name", (req, res) => {
-    fs.readFile(`./files/${req.params.name}`, "utf8", (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send("Error reading file");
-        }
-        res.send(data);
-    });
+  fs.readFile(`./files/${req.params.name}`, "utf8", (err, data) => {
+    res.render('show',{filename:req.params.name,data:data})
+  });
 });
-app.post("/create", (req, res) => {
-  fs.writeFile(`./files/${req.body.title.split(" ").join("")}.txt`, req.body.details, (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Error writing file");
-    }
+app.get("/edit/:name", (req, res) => {
+  fs.readFile(`./files/${req.params.name}`, "utf8", (err, data) => {
+    res.render('edit',{filename:req.params.name,data:data})
+  });
+});
+app.post("/update", (req, res) => {
+  fs.rename(`./files/${req.body.title}`, `./files/${req.body.newname}`, (err) => {
     res.redirect("/");
   });
+});
+
+
+app.post("/create", (req, res) => {
+  fs.writeFile(
+    `./files/${req.body.title.split(" ").join("")}.txt`,
+    req.body.details,
+    (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Error writing file");
+      }
+      res.redirect("/");
+    }
+  );
 });
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
