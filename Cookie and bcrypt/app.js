@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index')
 });
 
 app.post("/create",(req,res)=>{

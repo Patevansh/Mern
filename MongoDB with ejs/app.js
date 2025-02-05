@@ -1,17 +1,13 @@
 import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
 import User from "./models/user.js";
 
 
 const app = express();
 
-export const __filename = fileURLToPath(import.meta.url);
-export const __dirname = path.dirname(__filename);
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());            
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 
 
 app.get("/", (req, res) => {
